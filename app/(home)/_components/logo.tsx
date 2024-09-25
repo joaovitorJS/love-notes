@@ -16,6 +16,14 @@ export function Logo() {
         alt="Love Notes logo"
         width={80}
         height={80}
+        className="dark:hidden"
+      />
+      <Image
+        src="/logo-white.svg"
+        alt="Love Notes logo"
+        width={80}
+        height={80}
+        className="hidden dark:block"
       />
       <p className={cn('font-semibold', font.className)}>LoveNotes</p>
     </div>
