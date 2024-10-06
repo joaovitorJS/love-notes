@@ -7,7 +7,7 @@ import {
   useRef,
   useState,
 } from 'react'
-import { usePathname } from 'next/navigation'
+import { useParams, usePathname } from 'next/navigation'
 import { useMediaQuery } from 'usehooks-ts'
 import {
   ChevronsLeft,
@@ -26,6 +26,8 @@ import { cn } from '@/lib/utils'
 import { UserItem } from './user-item'
 import { Item } from './item'
 import { DocumentList } from './document-list'
+import { NavBar } from './navbar'
+
 import {
   Popover,
   PopoverContent,
@@ -37,6 +39,7 @@ import { useSettings } from '@/hooks/use-settings'
 
 export function Navigation() {
   const pathname = usePathname()
+  const params = useParams()
   const isMobile = useMediaQuery('(max-width: 768px)')
   const create = useMutation(api.documents.create)
   const search = useSearch()
@@ -164,7 +167,11 @@ export function Navigation() {
         <div>
           <UserItem />
           <Item label="Buscar" icon={Search} isSearch onClick={search.onOpen} />
-          <Item label="Configurações" icon={Settings} onClick={settings.onOpen} />
+          <Item
+            label="Configurações"
+            icon={Settings}
+            onClick={settings.onOpen}
+          />
           <Item onClick={handleCreate} label="Nova Página" icon={PlusCircle} />
         </div>
 
@@ -197,15 +204,19 @@ export function Navigation() {
           isMobile && 'left-0 w-full'
         )}
       >
-        <nav className="bg-transparent px-3 py-2 w-full">
-          {isCollapsed && (
-            <MenuIcon
-              className="h-6 w-6 text-muted-foreground"
-              role="button"
-              onClick={resetWidth}
-            />
-          )}
-        </nav>
+        {params.documentId ? (
+          <NavBar isCollapsed={isCollapsed} onResetWidth={resetWidth} />
+        ) : (
+          <nav className="bg-transparent px-3 py-2 w-full">
+            {isCollapsed && (
+              <MenuIcon
+                className="h-6 w-6 text-muted-foreground"
+                role="button"
+                onClick={resetWidth}
+              />
+            )}
+          </nav>
+        )}
       </div>
     </>
   )
