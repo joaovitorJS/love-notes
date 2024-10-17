@@ -10,6 +10,7 @@ import type { Doc } from '@/convex/_generated/dataModel'
 
 import { IconPicker } from '@/components/icon-picker'
 import { Button } from '@/components/ui/button'
+import { useCoverImage } from '@/hooks/use-cover-image'
 
 interface ToolbarProps {
   initialData: Doc<'documents'>
@@ -20,6 +21,7 @@ export function Toolbar({ initialData, preview }: ToolbarProps) {
   const inputRef = useRef<ElementRef<'textarea'>>(null)
   const [isEditing, setIsEditing] = useState(false)
   const [value, setValue] = useState(initialData.title)
+  const coverImage = useCoverImage()
 
   const update = useMutation(api.documents.update)
   const removeIcon = useMutation(api.documents.removeIcon)
@@ -104,7 +106,7 @@ export function Toolbar({ initialData, preview }: ToolbarProps) {
         )}
         {!initialData.coverImage && !preview && (
           <Button
-            onClick={() => {}}
+            onClick={coverImage.onOpen}
             className="text-muted-foreground text-xs"
             variant="outline"
             size="sm"
