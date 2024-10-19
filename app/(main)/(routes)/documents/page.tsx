@@ -8,15 +8,19 @@ import { Button } from '@/components/ui/button'
 import { useMutation } from 'convex/react'
 import { api } from '@/convex/_generated/api'
 import { toast } from 'sonner'
+import { useRouter } from 'next/navigation'
 
 const appName = env.NEXT_PUBLIC_APP_NAME
 
 export default function DocumentsPage() {
   const { user } = useUser()
+  const router = useRouter()
   const create = useMutation(api.documents.create)
 
   function onCreate() {
-    const promise = create({ title: 'Sem Título' })
+    const promise = create({ title: 'Sem Título' }).then(documentId =>
+      router.push(`/documents/${documentId}`)
+    )
 
     toast.promise(promise, {
       loading: 'Criando uma nova anotação...',

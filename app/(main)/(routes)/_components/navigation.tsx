@@ -7,7 +7,7 @@ import {
   useRef,
   useState,
 } from 'react'
-import { useParams, usePathname } from 'next/navigation'
+import { useParams, usePathname, useRouter } from 'next/navigation'
 import { useMediaQuery } from 'usehooks-ts'
 import {
   ChevronsLeft,
@@ -40,6 +40,7 @@ import { useSettings } from '@/hooks/use-settings'
 export function Navigation() {
   const pathname = usePathname()
   const params = useParams()
+  const router = useRouter()
   const isMobile = useMediaQuery('(max-width: 768px)')
   const create = useMutation(api.documents.create)
   const search = useSearch()
@@ -134,7 +135,7 @@ export function Navigation() {
   function handleCreate() {
     const promise = create({
       title: 'Sem Título',
-    })
+    }).then(documentId => router.push(`/documents/${documentId}`))
 
     toast.promise(promise, {
       loading: 'Criando uma nova anotação...',
